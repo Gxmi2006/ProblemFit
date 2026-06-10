@@ -5,7 +5,7 @@ ProblemFit should prove detection quality instead of only claiming it.
 ## Analyzer Layers
 
 1. Rule-based detector: finds explicit topic signals, phrases, and problem patterns.
-2. Local ML detector: trains a deterministic multi-label classifier from the training split and predicts only from the fixed topic list.
+2. Local classifier adapter: keeps the detector interface available without training a heavy model during free-tier web startup.
 3. Similarity detector: compares the pasted statement against training/calibration tagged examples with TF-IDF cosine similarity when scikit-learn is installed.
 4. Optional AI interface: reserved for a structured classifier that must choose only from the fixed topic list.
 5. Voting engine: combines detector votes, confidence, evidence, and statement quality.
@@ -45,9 +45,9 @@ Metrics are calculated at runtime from the current analyzer and seed labels. The
 Latest local report:
 
 - Precision: 0.982
-- Recall: 0.990
-- F1: 0.985
-- Exact match rate: 0.964
+- Recall: 0.963
+- F1: 0.968
+- Exact match rate: 0.907
 
 ## Improving Accuracy
 

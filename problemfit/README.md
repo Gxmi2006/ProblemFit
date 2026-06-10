@@ -10,7 +10,7 @@ The app does not scrape or copy protected problem statements. Users paste their 
 
 ## Highlights
 
-- Multi-layer topic detection with rule evidence, supervised local multi-label ML, TF-IDF-style similarity, optional AI interface, and voting.
+- Multi-layer topic detection with rule evidence, production-safe local classifier hooks, TF-IDF-style similarity, optional AI interface, and voting.
 - Readiness scoring against a learner skill profile.
 - Accuracy Lab that calculates real precision, recall, F1, exact match, misses, and false positives.
 - Built-in original problem database with training, calibration, evaluation, and demo examples across Beginner, Easy, Medium, and Hard coverage.
@@ -32,7 +32,7 @@ The app does not scrape or copy protected problem statements. Users paste their 
 ```text
 User problem text
   -> rule-based detector
-  -> local multi-label ML detector
+  -> production-safe local classifier adapter
   -> similarity detector over training/calibration tagged examples
   -> optional structured AI classifier interface
   -> voting and confidence engine
@@ -159,7 +159,7 @@ Current local evaluation should be regenerated with `GET /api/evaluate-analyzer`
 - Training examples: `2,100`
 - Calibration examples: `450`
 - Held-out evaluation examples: `450`
-- Latest local run: precision `0.982`, recall `0.990`, F1 `0.985`, exact match `0.964`
+- Latest production-safe local run: precision `0.982`, recall `0.963`, F1 `0.968`, exact match `0.907`
 
 CLI report:
 
