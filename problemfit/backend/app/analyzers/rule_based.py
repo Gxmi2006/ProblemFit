@@ -15,16 +15,16 @@ class Rule:
 
 
 RULES: tuple[Rule, ...] = (
-    Rule("arrays", 0.8, ("array", "list", "sequence", "values", "numbers", "grid", "matrix"), "The statement works over an indexed collection."),
+    Rule("arrays", 0.8, ("array", "list", "sequence", "values", "numbers", "grid", "matrix", "subarray", "nums", "nums l r"), "The statement works over an indexed collection."),
     Rule("strings", 0.82, ("string", "substring", "character", "word", "palindrome", "anagram", "letters", "parentheses"), "The statement asks about text or character processing."),
     Rule("hash_maps", 0.87, ("frequency", "count occurrences", "appears how many times", "fast lookup", "prefix counts", "target sum", "anagram", "exactly that many distinct"), "Frequency or lookup language suggests a hash map."),
     Rule("sets", 0.78, ("unique", "distinct", "set membership", "intersection", "appears in both", "membership"), "The problem emphasizes uniqueness or membership."),
     Rule("two_pointers", 0.78, ("pair sum", "two numbers", "two pointers", "opposite ends", "sorted positions", "remove repeated", "merge them"), "A pair or sorted scan can often be handled with two pointers."),
     Rule("sliding_window", 0.86, ("subarray window", "substring window", "longest substring", "longest subarray", "shortest substring", "window", "at most", "exactly that many distinct"), "A moving range is likely needed."),
-    Rule("binary_search", 0.85, ("binary search", "sorted array", "first day whose value is at least", "lower bound", "minimum possible", "maximum possible", "inserted", "monotonic"), "Sorted data or answer-space search points to binary search."),
+    Rule("binary_search", 0.85, ("binary search", "sorted array", "first day whose value is at least", "lower bound", "inserted", "monotonic answer"), "Sorted data or answer-space search points to binary search."),
     Rule("sorting", 0.77, ("sort", "sorted", "ordering", "ascending", "descending", "finish time"), "Ordering the data is probably part of the solution."),
     Rule("searching", 0.68, ("find", "search", "requested id", "position"), "The task asks for locating a value or state."),
-    Rule("stacks", 0.86, ("stack", "parentheses", "brackets", "undo", "next greater", "operators"), "LIFO behavior is signaled."),
+    Rule("stacks", 0.86, ("stack", "monotonic stack", "monotonic stacks", "parentheses", "brackets", "undo", "next greater", "next smaller", "previous greater", "previous smaller", "subarray maximum", "subarray minimum", "max nums l r", "min nums l r"), "LIFO or monotonic boundary behavior is signaled."),
     Rule("queues", 0.82, ("queue", "serve", "front", "back", "breadth first", "level distance", "topological"), "FIFO behavior or BFS-style processing is signaled."),
     Rule("trees", 0.86, ("tree", "root", "leaf", "node", "child links", "binary search tree"), "Hierarchical node language points to trees."),
     Rule("binary_search_trees", 0.88, ("binary search tree", "bst", "range counter"), "Ordered tree properties are central."),
@@ -43,8 +43,8 @@ RULES: tuple[Rule, ...] = (
     Rule("conditions", 0.68, ("if", "otherwise", "whether", "check", "valid", "blocked", "safe"), "Decision logic is part of the task."),
     Rule("loops", 0.66, ("repeat", "scan", "each", "for every", "count", "iterate", "nested loops"), "Repeated processing is required."),
     Rule("variables", 0.58, ("given", "calculate", "compute", "value"), "Basic value storage is implied."),
-    Rule("math_basics", 0.72, ("sum", "difference", "average", "minimum", "maximum", "divide", "multiply", "factorial", "digits", "arithmetic"), "Arithmetic appears in the requested result."),
-    Rule("time_complexity", 0.82, ("large", "efficient", "10^5", "10^6", "constraints", "time complexity", "avoid nested loops"), "The statement calls out efficiency or constraints."),
+    Rule("math_basics", 0.72, ("sum", "difference", "average", "minimum", "maximum", "max", "min", "divide", "multiply", "factorial", "digits", "arithmetic"), "Arithmetic appears in the requested result."),
+    Rule("time_complexity", 0.82, ("large", "efficient", "10^5", "10^6", "constraints", "time complexity", "avoid nested loops", "all subarrays", "sum of the values of all", "total value", "maximum possible total value"), "The statement calls out efficiency or all-range aggregation."),
     Rule("space_complexity", 0.62, ("memory", "auxiliary", "in-place", "storage"), "The problem may require memory tradeoff reasoning."),
 )
 

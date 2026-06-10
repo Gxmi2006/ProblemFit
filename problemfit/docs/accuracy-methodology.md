@@ -5,21 +5,22 @@ ProblemFit should prove detection quality instead of only claiming it.
 ## Analyzer Layers
 
 1. Rule-based detector: finds explicit topic signals, phrases, and problem patterns.
-2. Similarity detector: compares the pasted statement against original tagged examples with TF-IDF cosine similarity when scikit-learn is installed.
-3. Optional AI interface: reserved for a structured classifier that must choose only from the fixed topic list.
-4. Voting engine: combines detector votes, confidence, evidence, and statement quality.
-5. Readiness scorer: compares required and possible hidden topics with the learner profile.
+2. Local ML detector: trains deterministic topic centroids from the original labeled corpus and predicts only from the fixed topic list.
+3. Similarity detector: compares the pasted statement against original tagged examples with TF-IDF cosine similarity when scikit-learn is installed.
+4. Optional AI interface: reserved for a structured classifier that must choose only from the fixed topic list.
+5. Voting engine: combines detector votes, confidence, evidence, and statement quality.
+6. Readiness scorer: compares required and possible hidden topics with the learner profile.
 
 ## Evaluation Data
 
-The backend includes 260 original labeled problems:
+The backend includes 1,220 original labeled problems:
 
-- 65 Beginner
-- 85 Easy
-- 70 Medium
-- 40 Hard
+- 260 Beginner
+- 390 Easy
+- 360 Medium
+- 210 Hard
 
-Each problem has required topics and prerequisite topics. The Accuracy Lab uses these labels as ground truth.
+Each problem has required topics and prerequisite topics. Problems are marked for training, demo display, and/or evaluation. The Accuracy Lab uses the evaluation subset as ground truth.
 
 ## Metrics
 
@@ -36,4 +37,4 @@ Metrics are calculated at runtime from the current analyzer and seed labels. The
 
 ## Improving Accuracy
 
-Use the weakest topic breakdown to improve rules and seed coverage. If a topic has low recall, add better phrase coverage or more tagged examples. If a topic has low precision, reduce broad rules or require similarity agreement.
+Use the weakest topic breakdown to improve rules, local ML feature coverage, and seed coverage. If a topic has low recall, add better phrase coverage or more tagged examples. If a topic has low precision, reduce broad rules, tune local ML thresholds, or require stronger agreement.

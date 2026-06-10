@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Save } from "lucide-react";
 import { api } from "../services/api";
 import type { Topic } from "../types";
@@ -6,12 +7,14 @@ import { TopicSelector } from "../components/TopicSelector";
 import { GlowCard } from "../components/GlowCard";
 import { LoadingState } from "../components/LoadingState";
 import { getProfile } from "../utils/storage";
+import { ONBOARDING_KEY } from "./OnboardingPage";
 
 export function SkillProfilePage() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [selected, setSelected] = useState<string[]>(() => getProfile().known_topics);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -24,8 +27,9 @@ export function SkillProfilePage() {
 
   const save = async () => {
     await api.saveProfile(selected, getProfile().preferred_language ?? "Python");
+    localStorage.setItem(ONBOARDING_KEY, "true");
     setSaved(true);
-    window.setTimeout(() => setSaved(false), 1600);
+    window.setTimeout(() => navigate("/analyze"), 450);
   };
 
   if (loading) return <main className="mx-auto max-w-7xl px-4 py-10"><LoadingState label="Loading topics" /></main>;
@@ -46,7 +50,7 @@ export function SkillProfilePage() {
           </div>
           <button onClick={save} className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-aqua px-4 py-3 font-bold text-ink transition hover:bg-mint">
             <Save className="mr-2 h-5 w-5" />
-            {saved ? "Saved" : "Save Profile"}
+            {saved ? "Saved" : "Save & Continue"}
           </button>
         </GlowCard>
       </div>

@@ -4,6 +4,7 @@ from collections import Counter
 from typing import Any
 
 from app.analyzers.ai_optional import classify_with_optional_ai
+from app.analyzers.ml_local import LocalTopicClassifier
 from app.analyzers.readiness import score_readiness
 from app.analyzers.rule_based import detect_rules
 from app.analyzers.similarity import SimilarityDetector
@@ -13,6 +14,7 @@ from app.data.topics import TOPIC_BY_ID, display_name
 
 
 similarity_detector = SimilarityDetector(PROBLEMS)
+local_topic_classifier = LocalTopicClassifier(PROBLEMS)
 
 
 def analyze_problem(problem_text: str, known_topics: list[str] | None = None, language: str = "Python") -> dict[str, Any]:
@@ -20,8 +22,9 @@ def analyze_problem(problem_text: str, known_topics: list[str] | None = None, la
     rule_detections = detect_rules(problem_text)
     similar_problems = similarity_detector.top_similar(problem_text, limit=5)
     similarity_detections = similarity_detector.topic_votes(problem_text, limit=5)
+    ml_detections = local_topic_classifier.classify(problem_text, limit=10)
     ai_result = classify_with_optional_ai(problem_text)
-    voted = combine_votes(rule_detections, similarity_detections, ai_result, problem_text)
+    voted = combine_votes(rule_detections, similarity_detections, ml_detections, ai_result, problem_text)
 
     prerequisite_topics = _collect_prerequisites(voted["required_topics"], voted["possible_hidden_topics"], similar_problems)
     readiness = score_readiness(
@@ -46,6 +49,7 @@ def analyze_problem(problem_text: str, known_topics: list[str] | None = None, la
         "estimated_difficulty": estimated_difficulty,
         "estimated_time": estimated_time,
         "overall_confidence": voted["overall_confidence"],
+        "analysis_warnings": _analysis_warnings(problem_text, voted["required_topics"], voted["possible_hidden_topics"]),
         "verdict": _personalized_verdict(readiness["verdict"], readiness["missing_topics"]),
         "score_explanation": readiness["score_explanation"],
         "learning_path": readiness["learning_path"],
@@ -54,6 +58,7 @@ def analyze_problem(problem_text: str, known_topics: list[str] | None = None, la
         "detector_summary": {
             "rule_based": rule_detections,
             "similarity": similarity_detections,
+            "ml_local": ml_detections,
             "ai_optional": ai_result,
         },
         "language": language,
@@ -91,6 +96,8 @@ def _estimate_difficulty(required_topics: list[dict[str, Any]], similar_problems
         "binary_search": 2.4,
         "sliding_window": 2.5,
         "hash_maps": 2.0,
+        "stacks": 3.0,
+        "time_complexity": 2.8,
     }
     similar_score = 0.0
     if similar_problems:
@@ -146,6 +153,19 @@ def _personalized_verdict(verdict: str, missing_topics: list[str]) -> str:
         missing = ", ".join(display_name(topic) for topic in missing_topics[:3])
         return f"{verdict} Focus first on {missing}."
     return verdict
+
+
+def _analysis_warnings(problem_text: str, required_topics: list[dict[str, Any]], hidden_topics: list[dict[str, Any]]) -> list[str]:
+    normalized = problem_text.lower()
+    warnings: list[str] = []
+    if "chosen subarray" in normalized or "chosen subarrays" in normalized:
+        warnings.append(
+            "The phrase 'chosen subarrays' is ambiguous. The analyzer assumes all subarrays unless the statement says a subset or non-overlapping subarrays."
+        )
+    detected = {item["topic"] for item in required_topics + hidden_topics}
+    if {"arrays", "stacks", "time_complexity"} <= detected and "subarray" in normalized:
+        warnings.append("This looks like an all-subarray range aggregation problem, often solved with monotonic stacks.")
+    return warnings
 
 
 def dashboard_summary(profile: dict[str, Any], saved: list[dict[str, Any]]) -> dict[str, Any]:

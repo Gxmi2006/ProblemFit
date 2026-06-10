@@ -817,7 +817,7 @@ PROBLEM_BLUEPRINTS: list[dict[str, Any]] = [
     },
 ]
 
-TARGET_DIFFICULTY_COUNTS = {"Beginner": 65, "Easy": 85, "Medium": 70, "Hard": 40}
+TARGET_DIFFICULTY_COUNTS = {"Beginner": 260, "Easy": 390, "Medium": 360, "Hard": 210}
 
 EXTRA_CONTEXTS = [
     "garden",
@@ -1107,6 +1107,24 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
     },
     {
         "difficulty": "Medium",
+        "title": "{context_title} Subarray Range Sum",
+        "required_topics": ["arrays", "stacks", "time_complexity"],
+        "prerequisite_topics": ["loops", "math_basics"],
+        "focus": "Given nums from the {context}, the value of every subarray nums[l..r] is max(nums[l..r]) minus min(nums[l..r]); compute the sum of these values over all subarrays efficiently using monotonic stacks.",
+        "sample_input": "4\n1 3 2 4",
+        "sample_output": "13",
+    },
+    {
+        "difficulty": "Medium",
+        "title": "{context_title} Max Min Contribution",
+        "required_topics": ["arrays", "stacks", "time_complexity"],
+        "prerequisite_topics": ["loops", "math_basics"],
+        "focus": "Given an array from the {context}, calculate each element's contribution as a subarray maximum and subarray minimum with previous and next smaller or greater positions.",
+        "sample_input": "3\n2 1 3",
+        "sample_output": "5",
+    },
+    {
+        "difficulty": "Medium",
         "title": "{context_title} Interval Schedule",
         "required_topics": ["greedy", "sorting"],
         "prerequisite_topics": ["arrays"],
@@ -1167,6 +1185,15 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
         "focus": "Given a long array from the {context}, count subarrays with exactly k distinct values using sliding window frequency maps.",
         "sample_input": "5 2\n1 2 1 3 2",
         "sample_output": "7",
+    },
+    {
+        "difficulty": "Hard",
+        "title": "{context_title} All Subarray Ranges",
+        "required_topics": ["arrays", "stacks", "time_complexity"],
+        "prerequisite_topics": ["loops", "math_basics"],
+        "focus": "Given nums from the {context}, return the total max minus min value over all subarrays; a quadratic scan is too slow, so use monotonic increasing and decreasing stacks.",
+        "sample_input": "5\n4 1 3 2 5",
+        "sample_output": "30",
     },
 ]
 
@@ -1280,7 +1307,13 @@ def build_problem_database() -> list[dict[str, Any]]:
                 + ", ".join(display_name(topic) for topic in problem["required_topics"])
                 + "."
             ),
-            "evaluation": True,
+            "training": True,
+            "evaluation": problem["id"].startswith("pf-beg-")
+            or problem["id"].startswith("pf-easy-")
+            or problem["id"].startswith("pf-med-")
+            or problem["id"].startswith("pf-hard-")
+            or int(problem["id"].split("-")[-1]) % 4 == 0,
+            "demo": not problem["id"].startswith("pf-gen-") or int(problem["id"].split("-")[-1]) % 3 == 0,
         }
         problems.append(enriched)
 

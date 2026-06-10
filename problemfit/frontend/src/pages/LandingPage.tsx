@@ -11,7 +11,7 @@ const sections = [
   },
   {
     title: "How ProblemFit works",
-    body: "Paste a problem, select your known topics, and the analyzer compares rule evidence, tagged examples, and optional structured AI signals.",
+    body: "Paste a problem, select your known topics, and the analyzer compares rule evidence, local ML signals, tagged examples, and optional structured AI signals.",
     icon: Layers3,
   },
   {

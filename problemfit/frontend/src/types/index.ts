@@ -24,7 +24,9 @@ export type Problem = {
   hints: string[];
   explanation_summary: string;
   tags: string[];
+  training: boolean;
   evaluation: boolean;
+  demo: boolean;
 };
 
 export type DetectedTopic = {
@@ -68,6 +70,7 @@ export type AnalysisResult = {
   estimated_difficulty: string;
   estimated_time: string;
   overall_confidence: "high" | "medium" | "low";
+  analysis_warnings: string[];
   verdict: string;
   score_explanation: string[];
   learning_path: LearningStep[];

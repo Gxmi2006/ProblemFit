@@ -26,6 +26,15 @@ export function AnalysisResultCard({ result, onSave }: AnalysisResultCardProps) 
             <span className="rounded-md border border-white/10 px-2.5 py-1 text-xs text-slate-300">{result.estimated_time}</span>
           </div>
           <h1 className="font-display text-3xl font-black text-white md:text-4xl">{result.verdict}</h1>
+          {result.analysis_warnings?.length ? (
+            <div className="mt-4 space-y-2">
+              {result.analysis_warnings.map((warning) => (
+                <div key={warning} className="rounded-md border border-ember/30 bg-ember/10 px-3 py-2 text-sm leading-6 text-amber-100">
+                  {warning}
+                </div>
+              ))}
+            </div>
+          ) : null}
           <div className="mt-4 flex flex-wrap gap-2">
             {result.missing_topics.length ? (
               result.missing_topics.map((topic) => <SkillBadge key={topic} label={topic.replace("_", " ")} />)

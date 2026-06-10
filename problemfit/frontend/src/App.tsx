@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { AnimatedBackground } from "./components/AnimatedBackground";
-import { AnimatedIntro } from "./components/AnimatedIntro";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -10,6 +9,7 @@ import { AnalysisResultPage } from "./pages/AnalysisResultPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LandingPage } from "./pages/LandingPage";
 import { LearningPathPage } from "./pages/LearningPathPage";
+import { OnboardingPage } from "./pages/OnboardingPage";
 import { ProblemAnalyzerPage } from "./pages/ProblemAnalyzerPage";
 import { ProblemsPage } from "./pages/ProblemsPage";
 import { SavedProblemsPage } from "./pages/SavedProblemsPage";
@@ -20,11 +20,11 @@ export default function App() {
   return (
     <>
       <AnimatedBackground />
-      <AnimatedIntro />
       <ScrollToTop />
       <Navbar />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<OnboardingPage />} />
+        <Route path="/home" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/skills" element={<SkillProfilePage />} />
         <Route path="/analyze" element={<ProblemAnalyzerPage />} />

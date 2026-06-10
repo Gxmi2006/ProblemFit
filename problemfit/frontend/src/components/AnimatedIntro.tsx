@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FloatingTopicBadge } from "./FloatingTopicBadge";
+import { ProblemFitLogo } from "./ProblemFitLogo";
 
 const INTRO_KEY = "problemfit_intro_seen";
 const topics = ["Arrays", "Recursion", "Hash Maps", "Graphs", "DP"];
 
-export function AnimatedIntro() {
+type AnimatedIntroProps = {
+  forceShow?: boolean;
+  onComplete?: () => void;
+};
+
+export function AnimatedIntro({ forceShow = false, onComplete }: AnimatedIntroProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const seen = localStorage.getItem(INTRO_KEY);
+    const seen = !forceShow && localStorage.getItem(INTRO_KEY);
     if (seen) return;
     setVisible(true);
     const timer = window.setTimeout(() => {
-      localStorage.setItem(INTRO_KEY, "true");
-      setVisible(false);
+      finish();
     }, 2800);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [forceShow]);
 
-  const skip = () => {
-    localStorage.setItem(INTRO_KEY, "true");
+  const finish = () => {
+    if (!forceShow) localStorage.setItem(INTRO_KEY, "true");
     setVisible(false);
+    onComplete?.();
   };
 
   return (
@@ -36,7 +42,7 @@ export function AnimatedIntro() {
           <div className="absolute inset-0 bg-radial-field" />
           <div className="grid-bg absolute inset-0 opacity-70" />
           <button
-            onClick={skip}
+            onClick={finish}
             className="absolute right-5 top-5 rounded-md border border-white/15 px-3 py-2 text-sm text-slate-300 transition hover:border-aqua/60 hover:text-white"
           >
             Skip
@@ -47,16 +53,12 @@ export function AnimatedIntro() {
                 <FloatingTopicBadge key={topic} label={topic} index={index} />
               ))}
             </div>
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.55 }}
-              className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-aqua/40 bg-aqua/10 text-xl font-black text-aqua shadow-glow"
-            >
-              PF
-            </motion.div>
+            <ProblemFitLogo />
             <h1 className="font-display text-4xl font-black tracking-normal text-white">ProblemFit</h1>
-            <p className="mt-3 text-sm font-medium text-slate-300">Mapping your skills...</p>
+            <p className="mt-3 max-w-sm text-sm font-medium leading-6 text-slate-300">
+              Stop guessing. Know if this problem fits your skills before you start.
+            </p>
+            <p className="mt-2 text-xs font-bold uppercase text-aqua">Mapping your skills...</p>
             <div className="mt-8 h-1 w-64 overflow-hidden rounded-full bg-white/10">
               <motion.div
                 initial={{ width: "0%" }}

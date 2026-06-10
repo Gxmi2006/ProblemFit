@@ -10,6 +10,7 @@ Start here:
 - [Deployment guide](problemfit/docs/deployment.md)
 - [GitHub Student Developer Pack setup](problemfit/docs/github-student-pack-setup.md)
 - [Custom domain setup](problemfit/docs/custom-domain-setup.md)
+- [Free public launch checklist](problemfit/docs/free-public-launch-checklist.md)
 - [Accuracy methodology](problemfit/docs/accuracy-methodology.md)
 
 Local development:

@@ -2,14 +2,23 @@
 
 ## Frontend
 
-ProblemFit frontend can deploy to GitHub Pages, Vercel, or Netlify.
+ProblemFit frontend can deploy to Vercel, Cloudflare Pages, Netlify, or GitHub Pages.
 
-### Vercel or Netlify
+### Recommended Free Frontend: Vercel
 
 1. Set the project root to `problemfit/frontend`.
 2. Build command: `npm run build`.
 3. Publish directory: `dist`.
-4. Add `VITE_API_BASE_URL` with the deployed backend URL.
+4. Add `VITE_API_BASE_URL` with the deployed backend URL, for example `https://api.problemfit.example`.
+
+### Cloudflare Pages or Netlify
+
+Use the same frontend settings:
+
+- Project root: `problemfit/frontend`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variable: `VITE_API_BASE_URL`
 
 ### GitHub Pages
 
@@ -29,6 +38,7 @@ The FastAPI backend can deploy to Render, Heroku, DigitalOcean, or Azure.
 3. Build command: `pip install -r requirements.txt`.
 4. Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
 5. Add environment variables from `.env.example`.
+6. Set `FRONTEND_ORIGIN` to the deployed frontend URL, for example `https://problemfit.example`.
 
 ### Heroku
 
@@ -43,6 +53,17 @@ Use the same install and start commands as Render. Make sure the platform expose
 ## MongoDB Atlas
 
 Set `MONGODB_URI` and `MONGODB_DB`. If MongoDB is not reachable, the backend falls back to local JSON so demo mode remains usable.
+
+## Student Pack Domain
+
+Claim a domain from a GitHub Student Developer Pack provider first. Then:
+
+- Point the main domain to the frontend host.
+- Point `api.<domain>` to the backend host.
+- Set `VITE_API_BASE_URL=https://api.<domain>` in the frontend host.
+- Set `FRONTEND_ORIGIN=https://<domain>` in the backend host.
+
+Use `problemfit/frontend/public/CNAME.example` as the template if you publish with GitHub Pages.
 
 ## Sentry
 

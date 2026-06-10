@@ -6,14 +6,14 @@ ProblemFit is a premium full-stack learning platform for beginner and intermedia
 
 ProblemFit analyzes the concepts behind a coding problem, compares them with the learner's known skills, and returns a readiness score, missing topics, confidence level, detector evidence, easier practice problems, and a learning path.
 
-The app does not scrape or copy protected problem statements. Users paste their own statements, and the demo database contains **260 original educational problems**.
+The app does not scrape or copy protected problem statements. Users paste their own statements, and the demo/training database contains **1,220 original educational problems**.
 
 ## Highlights
 
-- Multi-layer topic detection with rule evidence, TF-IDF-style similarity, optional AI interface, and voting.
+- Multi-layer topic detection with rule evidence, local ML topic centroids, TF-IDF-style similarity, optional AI interface, and voting.
 - Readiness scoring against a learner skill profile.
 - Accuracy Lab that calculates real precision, recall, F1, exact match, misses, and false positives.
-- Built-in original problem database with Beginner, Easy, Medium, and Hard coverage.
+- Built-in original problem database with training, evaluation, and demo examples across Beginner, Easy, Medium, and Hard coverage.
 - Demo mode that works without Clerk, MongoDB, Sentry, or paid AI APIs.
 - Polished React UI with animated intro, dashboard, skill roadmap, saved analyses, and responsive pages.
 
@@ -23,7 +23,7 @@ The app does not scrape or copy protected problem statements. Users paste their 
 - Skill Profile page for selecting known topics.
 - Problem Analyzer page for pasted problem statements.
 - Analysis Result page with readiness meter, evidence, missing topics, and recommendations.
-- Built-in Problems page with 260 original problems and pagination.
+- Built-in Problems page with 1,220 original problems and pagination.
 - Accuracy Lab page with computed analyzer metrics.
 - Learning Path, Dashboard, Saved Problems, About, and Settings pages.
 
@@ -32,6 +32,7 @@ The app does not scrape or copy protected problem statements. Users paste their 
 ```text
 User problem text
   -> rule-based detector
+  -> local ML topic centroid detector
   -> similarity detector over original tagged examples
   -> optional structured AI classifier interface
   -> voting and confidence engine
@@ -42,7 +43,7 @@ User problem text
 ## Tech Stack
 
 - Frontend: React, Vite, TypeScript, Tailwind CSS, Framer Motion, React Router, Recharts
-- Backend: FastAPI, Pydantic, Python, TF-IDF similarity with scikit-learn when installed, deterministic fallback otherwise
+- Backend: FastAPI, Pydantic, Python, local deterministic ML, TF-IDF similarity with scikit-learn when installed, deterministic fallback otherwise
 - Optional services: MongoDB Atlas, Clerk, Sentry, optional AI classifier adapter
 - Demo mode: localStorage in the frontend and local JSON fallback in the backend
 
@@ -131,6 +132,7 @@ The response includes:
 - Missing topics and prerequisite gaps.
 - Readiness score and verdict.
 - Detector evidence and similar tagged examples.
+- Analysis warnings when the statement is ambiguous.
 - Learning path and recommended easier problems.
 
 ## API Endpoints
@@ -149,14 +151,12 @@ The response includes:
 
 ## Accuracy Lab
 
-The Accuracy Lab runs the analyzer against the 260 original labeled problems and computes metrics at runtime. Metrics are not hard-coded.
+The Accuracy Lab runs the analyzer against the labeled evaluation subset and computes metrics at runtime. Metrics are not hard-coded.
 
-Current local evaluation after the 260-problem expansion:
+Current local evaluation should be regenerated with `GET /api/evaluate-analyzer` after analyzer changes.
 
-- Precision: `0.884`
-- Recall: `1.0`
-- F1: `0.93`
-- Exact match: `0.635`
+- Corpus size: `1,220`
+- Evaluation examples: more than `260`
 
 ## Tests
 
@@ -167,7 +167,7 @@ python -m pytest -q
 
 ## Deployment
 
-Frontend deployment works on Vercel, Netlify, or GitHub Pages. Backend deployment works on Render, Heroku, DigitalOcean, or Azure.
+Frontend deployment works on Vercel, Cloudflare Pages, Netlify, or GitHub Pages. Backend deployment works on Render, Heroku, DigitalOcean, or Azure. A fully free starter path is Vercel or Cloudflare Pages for the frontend, Render for the backend, and MongoDB Atlas for persistence.
 
 See:
 

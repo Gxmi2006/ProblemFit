@@ -2,7 +2,7 @@ import { NavLink, Link } from "react-router-dom";
 import { BarChart3, Bookmark, FlaskConical, Gauge, Home, Map, Search, Settings, Sparkles, UserRound } from "lucide-react";
 
 const links = [
-  { to: "/", label: "Home", icon: Home },
+  { to: "/home", label: "Home", icon: Home },
   { to: "/dashboard", label: "Dashboard", icon: Gauge },
   { to: "/skills", label: "Skills", icon: UserRound },
   { to: "/analyze", label: "Analyze", icon: Search },
@@ -17,7 +17,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/80 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/home" className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-md border border-aqua/35 bg-aqua/10 text-sm font-black text-aqua shadow-glow">
             PF
           </span>

@@ -22,13 +22,14 @@ TOPIC_REASONS = {
 def combine_votes(
     rule_detections: list[dict[str, Any]],
     similarity_detections: list[dict[str, Any]],
+    ml_detections: list[dict[str, Any]],
     ai_result: dict[str, Any],
     problem_text: str,
 ) -> dict[str, Any]:
     quality = statement_quality_multiplier(problem_text)
     grouped: dict[str, dict[str, Any]] = defaultdict(lambda: {"votes": [], "confidences": [], "evidence": [], "reasons": []})
 
-    for detection in rule_detections + similarity_detections:
+    for detection in rule_detections + similarity_detections + ml_detections:
         topic = detection["topic"]
         grouped[topic]["votes"].append(detection["source"])
         grouped[topic]["confidences"].append(float(detection["confidence"]))
@@ -61,6 +62,8 @@ def combine_votes(
             label = "weak_signal"
 
         if len(problem_text.split()) < 18 and label == "required":
+            label = "possible_hidden"
+        if topic == "math_basics" and confidence < 0.82 and label == "required":
             label = "possible_hidden"
 
         final_topics.append(
