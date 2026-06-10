@@ -175,29 +175,6 @@ cd problemfit/backend
 python -m pytest -q
 ```
 
-## Deployment
-
-Recommended public deployment is Vercel Hobby for the frontend, Render free web service for the FastAPI backend, and MongoDB Atlas free/shared cluster for persistence. Cloudflare Pages or Netlify can also host the frontend.
-
-See:
-
-- [Deployment guide](docs/deployment.md)
-- [GitHub Student Developer Pack setup](docs/github-student-pack-setup.md)
-- [Custom domain setup](docs/custom-domain-setup.md)
-- [Accuracy methodology](docs/accuracy-methodology.md)
-
-## Custom Domain
-
-After you claim a free Student Developer Pack domain, set it in your host dashboard and DNS provider. For GitHub Pages, copy `frontend/public/CNAME.example` to `frontend/public/CNAME` and replace the placeholder with your domain.
-
-Example:
-
-```text
-learnproblemfit.example
-```
-
-Do not commit secrets or provider API keys. DNS records must be configured in the domain provider account.
-
 ## Code Quality Notes
 
 ProblemFit is intentionally honest about uncertainty. Topic detection combines rule evidence, similarity evidence, optional AI output when configured, and a voting engine. The Accuracy Lab calculates real metrics from the built-in labeled problems.
