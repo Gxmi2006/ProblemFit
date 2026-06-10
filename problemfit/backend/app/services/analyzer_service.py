@@ -13,7 +13,9 @@ from app.data.problems import PROBLEMS
 from app.data.topics import TOPIC_BY_ID, display_name
 
 
-similarity_detector = SimilarityDetector(PROBLEMS)
+KNOWLEDGE_PROBLEMS = [problem for problem in PROBLEMS if problem.get("training") or problem.get("calibration")]
+
+similarity_detector = SimilarityDetector(KNOWLEDGE_PROBLEMS)
 local_topic_classifier = LocalTopicClassifier(PROBLEMS)
 
 
@@ -62,7 +64,7 @@ def analyze_problem(problem_text: str, known_topics: list[str] | None = None, la
             "ai_optional": ai_result,
         },
         "language": language,
-        "note": "This result is based on rule detection, TF-IDF similarity search, voting, and optional AI verification when configured.",
+        "note": "This result is based on rule detection, held-out TF-IDF similarity search, local multi-label ML, voting, and optional AI verification when configured.",
     }
 
 

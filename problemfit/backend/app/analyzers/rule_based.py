@@ -23,28 +23,28 @@ RULES: tuple[Rule, ...] = (
     Rule("sliding_window", 0.86, ("subarray window", "substring window", "longest substring", "longest subarray", "shortest substring", "window", "at most", "exactly that many distinct"), "A moving range is likely needed."),
     Rule("binary_search", 0.85, ("binary search", "sorted array", "first day whose value is at least", "lower bound", "inserted", "monotonic answer"), "Sorted data or answer-space search points to binary search."),
     Rule("sorting", 0.77, ("sort", "sorted", "ordering", "ascending", "descending", "finish time"), "Ordering the data is probably part of the solution."),
-    Rule("searching", 0.68, ("find", "search", "requested id", "position"), "The task asks for locating a value or state."),
+    Rule("searching", 0.72, ("linear search", "search", "requested id", "first position", "target position"), "The task asks for locating a value or state."),
     Rule("stacks", 0.86, ("stack", "monotonic stack", "monotonic stacks", "parentheses", "brackets", "undo", "next greater", "next smaller", "previous greater", "previous smaller", "subarray maximum", "subarray minimum", "max nums l r", "min nums l r"), "LIFO or monotonic boundary behavior is signaled."),
     Rule("queues", 0.82, ("queue", "serve", "front", "back", "breadth first", "level distance", "topological"), "FIFO behavior or BFS-style processing is signaled."),
-    Rule("trees", 0.86, ("tree", "root", "leaf", "node", "child links", "binary search tree"), "Hierarchical node language points to trees."),
+    Rule("trees", 0.86, ("tree", "root", "leaf", "rooted tree", "child links", "binary search tree"), "Hierarchical node language points to trees."),
     Rule("binary_search_trees", 0.88, ("binary search tree", "bst", "range counter"), "Ordered tree properties are central."),
     Rule("heaps", 0.86, ("heap", "priority queue", "top k", "k pair", "minimum cost route"), "Priority ordering suggests a heap."),
-    Rule("graphs", 0.88, ("graph", "edge", "path", "connected", "component", "building", "station", "friendship", "dependency", "vertices", "roads"), "Edges and connectivity language points to graphs."),
+    Rule("graphs", 0.88, ("graph", "edge", "connected", "component", "building", "station", "friendship", "dependency", "vertices", "roads"), "Edges and connectivity language points to graphs."),
     Rule("bfs", 0.84, ("breadth first", "bfs", "level distance", "shortest unweighted", "queue"), "Level-order or shortest unweighted traversal suggests BFS."),
     Rule("dfs", 0.84, ("depth first", "dfs", "recursive search", "connected land", "component", "reachable", "diameter"), "Recursive traversal or reachability suggests DFS."),
     Rule("greedy", 0.8, ("greedy", "locally", "finish time", "minimum total cost", "schedule", "choose the minimum"), "A choice-ordering optimization may be greedy."),
-    Rule("dynamic_programming", 0.9, ("dynamic programming", "minimum cost", "maximum value", "number of ways", "count paths", "optimal", "overlapping", "edit distance", "knapsack", "minimum cuts"), "Optimal/counting subproblems suggest dynamic programming."),
+    Rule("dynamic_programming", 0.9, ("dynamic programming", "minimum cost to reach", "number of ways", "count paths", "optimal subproblem", "overlapping", "edit distance", "knapsack", "minimum cuts"), "Optimal/counting subproblems suggest dynamic programming."),
     Rule("bit_manipulation", 0.86, ("xor", "bit", "bits", "and operation", "or operation", "mask", "bit masks"), "Bitwise operations are explicitly mentioned."),
     Rule("modular_arithmetic", 0.86, ("modulo", "modular", "remainder", "10^9+7", "large count"), "The output requires remainder arithmetic."),
     Rule("recursion", 0.82, ("recursion", "recursive", "factorial", "self-similar", "base case", "recursively"), "The problem points to self-calling functions."),
     Rule("linked_lists", 0.84, ("linked list", "node values", "next pointer", "train cars", "insert node"), "Node-link traversal is needed."),
     Rule("pointers", 0.72, ("pointer", "next pointer", "address", "linked list", "null"), "Pointer or reference handling appears."),
     Rule("functions", 0.7, ("function", "returns", "parameters"), "The task asks for reusable function logic."),
-    Rule("conditions", 0.68, ("if", "otherwise", "whether", "check", "valid", "blocked", "safe"), "Decision logic is part of the task."),
+    Rule("conditions", 0.68, ("otherwise", "condition", "valid", "blocked", "safe", "stop marker"), "Decision logic is part of the task."),
     Rule("loops", 0.66, ("repeat", "scan", "each", "for every", "count", "iterate", "nested loops"), "Repeated processing is required."),
-    Rule("variables", 0.58, ("given", "calculate", "compute", "value"), "Basic value storage is implied."),
-    Rule("math_basics", 0.72, ("sum", "difference", "average", "minimum", "maximum", "max", "min", "divide", "multiply", "factorial", "digits", "arithmetic"), "Arithmetic appears in the requested result."),
-    Rule("time_complexity", 0.82, ("large", "efficient", "10^5", "10^6", "constraints", "time complexity", "avoid nested loops", "all subarrays", "sum of the values of all", "total value", "maximum possible total value"), "The statement calls out efficiency or all-range aggregation."),
+    Rule("variables", 0.64, ("variable", "variables", "store", "swap", "counter", "primitive", "scanf", "printf"), "Basic value storage is implied."),
+    Rule("math_basics", 0.72, ("sum", "difference", "average", "divide", "multiply", "factorial", "digits", "arithmetic", "remainder"), "Arithmetic appears in the requested result."),
+    Rule("time_complexity", 0.84, ("10^5", "10^6", "constraints", "time complexity", "avoid nested loops", "brute force approach may be too slow", "quadratic scan is too slow", "all subarrays", "sum of the values of all", "maximum possible total value"), "The statement calls out efficiency or all-range aggregation."),
     Rule("space_complexity", 0.62, ("memory", "auxiliary", "in-place", "storage"), "The problem may require memory tradeoff reasoning."),
 )
 
@@ -70,6 +70,8 @@ def detect_rules(problem_text: str) -> list[dict]:
             continue
         coverage_bonus = min(0.12, 0.03 * (len(matched) - 1))
         confidence = min(0.96, rule.confidence + coverage_bonus)
+        if rule.topic == "conditions" and {"otherwise", "stop marker"} & set(matched):
+            confidence = max(confidence, 0.88)
         detections.append(
             {
                 "topic": rule.topic,

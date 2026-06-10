@@ -40,8 +40,9 @@ export function AccuracyLabPage() {
         <EmptyState title="Evaluation not run yet" body="Run Evaluation to calculate real metrics from the built-in labeled test set." />
       ) : (
         <div className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            <AccuracyMetricCard label="Total test problems" value={String(result.total_problems)} detail="Original labeled problems" />
+          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+            <AccuracyMetricCard label="Corpus" value={String(result.corpus_size)} detail={`${result.training_count} train / ${result.calibration_count} tune`} />
+            <AccuracyMetricCard label="Evaluation" value={String(result.evaluation_count)} detail="Held-out labeled problems" />
             <AccuracyMetricCard label="Precision" value={result.precision} detail="How often predicted topics are correct" />
             <AccuracyMetricCard label="Recall" value={result.recall} detail="How many expected topics were found" />
             <AccuracyMetricCard label="F1 score" value={result.f1} detail="Balance of precision and recall" />

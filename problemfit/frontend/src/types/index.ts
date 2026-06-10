@@ -24,7 +24,9 @@ export type Problem = {
   hints: string[];
   explanation_summary: string;
   tags: string[];
+  split: "training" | "calibration" | "evaluation";
   training: boolean;
+  calibration: boolean;
   evaluation: boolean;
   demo: boolean;
 };
@@ -98,6 +100,10 @@ export type Profile = {
 };
 
 export type EvaluationResult = {
+  corpus_size: number;
+  training_count: number;
+  calibration_count: number;
+  evaluation_count: number;
   total_problems: number;
   precision: number;
   recall: number;
@@ -113,6 +119,7 @@ export type EvaluationResult = {
     false_negatives: number;
   }>;
   missed_topics: Array<{ topic: string; count: number }>;
+  false_negatives: Array<{ topic: string; count: number }>;
   false_positives: Array<{ topic: string; count: number }>;
   examples: Array<{
     problem_id: string;

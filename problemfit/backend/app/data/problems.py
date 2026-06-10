@@ -817,7 +817,7 @@ PROBLEM_BLUEPRINTS: list[dict[str, Any]] = [
     },
 ]
 
-TARGET_DIFFICULTY_COUNTS = {"Beginner": 260, "Easy": 390, "Medium": 360, "Hard": 210}
+TARGET_DIFFICULTY_COUNTS = {"Beginner": 650, "Easy": 950, "Medium": 900, "Hard": 500}
 
 EXTRA_CONTEXTS = [
     "garden",
@@ -850,6 +850,36 @@ EXTRA_CONTEXTS = [
     "school office",
     "delivery hub",
     "training arena",
+    "exam center",
+    "fitness studio",
+    "laptop repair desk",
+    "travel counter",
+    "community kitchen",
+    "library archive",
+    "science museum",
+    "campus shuttle",
+    "online classroom",
+    "robot soccer field",
+    "festival gate",
+    "first aid booth",
+    "plant nursery",
+    "craft market",
+    "airport lounge",
+    "swimming pool",
+    "map room",
+    "rehearsal hall",
+    "debate club",
+    "code review desk",
+    "data lab",
+    "recruitment fair",
+    "treasure room",
+    "parcel shelf",
+    "warehouse aisle",
+    "volunteer desk",
+    "library kiosk",
+    "solar workshop",
+    "quiz hall",
+    "training camp",
 ]
 
 EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
@@ -924,6 +954,24 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
         "focus": "Given an identification number from the {context}, repeatedly take digits and count how many are even.",
         "sample_input": "40831",
         "sample_output": "3",
+    },
+    {
+        "difficulty": "Beginner",
+        "title": "{context_title} C Format Helper",
+        "required_topics": ["c_basics", "variables"],
+        "prerequisite_topics": [],
+        "focus": "Write a small C program for the {context} that reads two integers with scanf and prints them with printf after swapping their order.",
+        "sample_input": "8 13",
+        "sample_output": "13 8",
+    },
+    {
+        "difficulty": "Beginner",
+        "title": "{context_title} Python List Helper",
+        "required_topics": ["python_basics", "arrays"],
+        "prerequisite_topics": ["variables"],
+        "focus": "Write a Python script for the {context} that reads a line of integers, stores them in a list, and prints the first and last item.",
+        "sample_input": "4 7 9 2",
+        "sample_output": "4 2",
     },
     {
         "difficulty": "Easy",
@@ -1023,6 +1071,33 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
         "focus": "Given a bit mask from the {context}, use AND and OR operations to check and enable a permission bit.",
         "sample_input": "10 2",
         "sample_output": "off 14",
+    },
+    {
+        "difficulty": "Easy",
+        "title": "{context_title} Sorted Pair Count",
+        "required_topics": ["arrays", "sorting", "two_pointers"],
+        "prerequisite_topics": ["loops"],
+        "focus": "Given an already sorted list from the {context}, count pairs with sum below a limit by moving two indexes from the ends.",
+        "sample_input": "5 9\n1 2 4 6 8",
+        "sample_output": "6",
+    },
+    {
+        "difficulty": "Easy",
+        "title": "{context_title} Direct Position Scan",
+        "required_topics": ["arrays", "searching"],
+        "prerequisite_topics": ["loops"],
+        "focus": "Given unsorted ids from the {context}, scan from left to right and print the first position where the requested id appears.",
+        "sample_input": "5 7\n3 9 7 1 7",
+        "sample_output": "2",
+    },
+    {
+        "difficulty": "Easy",
+        "title": "{context_title} Linked Ticket Chain",
+        "required_topics": ["linked_lists", "pointers"],
+        "prerequisite_topics": ["loops"],
+        "focus": "Given node values from the {context}, follow next pointers in a linked list and print the values in traversal order.",
+        "sample_input": "3\n4 8 2",
+        "sample_output": "4 8 2",
     },
     {
         "difficulty": "Medium",
@@ -1133,6 +1208,15 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
         "sample_output": "2",
     },
     {
+        "difficulty": "Medium",
+        "title": "{context_title} BST Range Counter",
+        "required_topics": ["trees", "binary_search_trees", "recursion"],
+        "prerequisite_topics": ["binary_search"],
+        "focus": "Given a binary search tree from the {context}, recursively count node values that fall inside an inclusive query range.",
+        "sample_input": "5\n6 3 8 2 5\n3 6",
+        "sample_output": "3",
+    },
+    {
         "difficulty": "Hard",
         "title": "{context_title} Weighted Route Planner",
         "required_topics": ["graphs", "heaps", "greedy", "time_complexity"],
@@ -1194,6 +1278,24 @@ EXTRA_PROBLEM_FAMILIES: list[dict[str, Any]] = [
         "focus": "Given nums from the {context}, return the total max minus min value over all subarrays; a quadratic scan is too slow, so use monotonic increasing and decreasing stacks.",
         "sample_input": "5\n4 1 3 2 5",
         "sample_output": "30",
+    },
+    {
+        "difficulty": "Hard",
+        "title": "{context_title} In Place Stream Merge",
+        "required_topics": ["arrays", "two_pointers", "space_complexity"],
+        "prerequisite_topics": ["loops"],
+        "focus": "Given two sorted buffers from the {context}, merge the second buffer into spare space at the end of the first while using only constant auxiliary memory.",
+        "sample_input": "3 3\n1 4 8 0 0 0\n2 5 7",
+        "sample_output": "1 2 4 5 7 8",
+    },
+    {
+        "difficulty": "Hard",
+        "title": "{context_title} Memory Limited Components",
+        "required_topics": ["graphs", "dfs", "space_complexity"],
+        "prerequisite_topics": ["arrays"],
+        "focus": "Given a sparse graph from the {context}, count connected components while storing only adjacency lists and a visited marker for each node.",
+        "sample_input": "5 2\n1 2\n4 5",
+        "sample_output": "3",
     },
 ]
 
@@ -1278,22 +1380,36 @@ def _hints(problem: dict[str, Any]) -> list[str]:
 
 
 def _statement(problem: dict[str, Any]) -> str:
-    topics = ", ".join(display_name(topic).lower() for topic in problem["required_topics"])
-    if problem["difficulty"] in {"Medium", "Hard"}:
-        scale = "The input can be large, so an efficient approach and time complexity reasoning matter."
+    if "time_complexity" in problem["required_topics"]:
+        scale = "The input can be large enough that a direct brute-force approach may be too slow."
+    elif "space_complexity" in problem["required_topics"]:
+        scale = "The memory limit is tight, so keep auxiliary storage small."
+    elif problem["difficulty"] in {"Medium", "Hard"}:
+        scale = "The input size requires choosing the intended data structure carefully."
     elif problem["difficulty"] == "Easy":
-        scale = "The input is moderate, but avoid unnecessary nested loops when a direct structure is available."
+        scale = "The input is moderate and the intended approach should stay simple."
     else:
-        scale = "The input is small and is designed for careful practice with the basics."
+        scale = "The input is small and is designed for careful beginner practice."
     return (
-        f"{problem['focus']} The main concepts are {topics}. {scale} "
+        f"{problem['focus']} {scale} "
         "Return exactly the requested result; do not print extra explanation."
     )
+
+
+def _split_for_problem(problem_id: str) -> str:
+    serial = int(problem_id.rsplit("-", 1)[-1])
+    bucket = serial % 20
+    if bucket <= 13:
+        return "training"
+    if bucket <= 16:
+        return "calibration"
+    return "evaluation"
 
 
 def build_problem_database() -> list[dict[str, Any]]:
     problems: list[dict[str, Any]] = []
     for problem in _expanded_blueprints():
+        split = _split_for_problem(problem["id"])
         enriched = {
             **problem,
             "statement": _statement(problem),
@@ -1307,13 +1423,11 @@ def build_problem_database() -> list[dict[str, Any]]:
                 + ", ".join(display_name(topic) for topic in problem["required_topics"])
                 + "."
             ),
-            "training": True,
-            "evaluation": problem["id"].startswith("pf-beg-")
-            or problem["id"].startswith("pf-easy-")
-            or problem["id"].startswith("pf-med-")
-            or problem["id"].startswith("pf-hard-")
-            or int(problem["id"].split("-")[-1]) % 4 == 0,
-            "demo": not problem["id"].startswith("pf-gen-") or int(problem["id"].split("-")[-1]) % 3 == 0,
+            "split": split,
+            "training": split == "training",
+            "calibration": split == "calibration",
+            "evaluation": split == "evaluation",
+            "demo": split == "training" and int(problem["id"].split("-")[-1]) % 5 == 0,
         }
         problems.append(enriched)
 

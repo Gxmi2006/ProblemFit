@@ -74,6 +74,10 @@ def evaluate_analyzer(problems: list[dict[str, Any]], analyze: Callable[[str, li
         )
 
     return {
+        "corpus_size": len(problems),
+        "training_count": sum(1 for problem in problems if problem.get("training")),
+        "calibration_count": sum(1 for problem in problems if problem.get("calibration")),
+        "evaluation_count": total,
         "total_problems": total,
         "precision": round(sum(precision_values) / max(1, total), 3),
         "recall": round(sum(recall_values) / max(1, total), 3),
@@ -81,6 +85,7 @@ def evaluate_analyzer(problems: list[dict[str, Any]], analyze: Callable[[str, li
         "exact_match_rate": round(exact_matches / max(1, total), 3),
         "topic_breakdown": topic_breakdown,
         "missed_topics": [{"topic": topic, "count": count} for topic, count in missed_topics.most_common(12)],
+        "false_negatives": [{"topic": topic, "count": count} for topic, count in missed_topics.most_common(12)],
         "false_positives": [{"topic": topic, "count": count} for topic, count in false_positive_topics.most_common(12)],
         "examples": examples[:20],
     }

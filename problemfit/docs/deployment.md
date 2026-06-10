@@ -29,7 +29,7 @@ Use the same frontend settings:
 
 ## Backend
 
-The FastAPI backend can deploy to Render, Heroku, DigitalOcean, or Azure.
+The recommended free starter backend is Render. The FastAPI service can also run on any Python web host that exposes a `$PORT` environment variable.
 
 ### Render
 
@@ -40,19 +40,20 @@ The FastAPI backend can deploy to Render, Heroku, DigitalOcean, or Azure.
 5. Add environment variables from `.env.example`.
 6. Set `FRONTEND_ORIGIN` to the deployed frontend URL, for example `https://problemfit.example`.
 
-### Heroku
-
-1. Use root `problemfit/backend`.
-2. Add a Procfile with `web: uvicorn app.main:app --host 0.0.0.0 --port $PORT` if deploying there directly.
-3. Set config vars for MongoDB, Sentry, and allowed frontend origin.
-
-### DigitalOcean or Azure
+### Other Python Hosts
 
 Use the same install and start commands as Render. Make sure the platform exposes `$PORT` and that `FRONTEND_ORIGIN` matches the frontend domain.
 
 ## MongoDB Atlas
 
 Set `MONGODB_URI` and `MONGODB_DB`. If MongoDB is not reachable, the backend falls back to local JSON so demo mode remains usable.
+
+## Recommended Free Public Setup
+
+- Frontend: Vercel Hobby
+- Backend: Render free web service
+- Database: MongoDB Atlas free/shared cluster
+- Domain: GitHub Student Developer Pack domain
 
 ## Student Pack Domain
 

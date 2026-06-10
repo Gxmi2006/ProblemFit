@@ -21,9 +21,10 @@ class SimilarityDetector:
                 " ".join(
                     [
                         problem["title"],
+                        problem.get("focus", ""),
                         problem["statement"],
-                        " ".join(problem["required_topics"]),
-                        " ".join(problem["prerequisite_topics"]),
+                        problem.get("input_format", ""),
+                        problem.get("output_format", ""),
                     ]
                 )
             )

@@ -4,7 +4,7 @@ ProblemFit works without paid APIs. These optional services are student-friendly
 
 ## Custom Domains
 
-Use student offers for `.me`, `.tech`, `.dev`, or `.app` domains when available. Point the domain to Vercel, Netlify, GitHub Pages, or the chosen backend host.
+Use student offers for `.me`, `.tech`, `.dev`, or `.app` domains when available. Point the main domain to Vercel and the `api` subdomain to Render.
 
 ## GitHub Pages
 
@@ -12,7 +12,7 @@ Host the frontend demo on GitHub Pages by publishing `problemfit/frontend/dist`.
 
 For this app, Vercel or Cloudflare Pages is usually easier than GitHub Pages because the frontend is a Vite app and needs an environment variable for the backend URL at build time.
 
-## Render, Heroku, DigitalOcean, or Azure
+## Render Backend
 
 Deploy the backend with:
 
@@ -21,7 +21,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Render free web services are a good starter backend for this project. Free services can sleep or have limits, so serious production traffic should move to a paid instance later.
+Render free web services are the recommended starter backend for this project. Free services can sleep or have limits, so serious production traffic should move to a paid instance later.
 
 ## MongoDB Atlas
 
