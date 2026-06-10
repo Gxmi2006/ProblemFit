@@ -1,7 +1,27 @@
 import type { AnalysisResult, DashboardSummary, EvaluationResult, Language, LearningPathResponse, Problem, Profile, SavedAnalysis, Topic } from "../types";
 import { DEMO_USER_ID, getProfile, getSavedAnalyses, saveAnalysis as saveLocalAnalysis, saveProfile as saveLocalProfile } from "../utils/storage";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const DEFAULT_API_BASE = "http://127.0.0.1:8000";
+
+function normalizeApiBase(value: string | undefined) {
+  const raw = value?.trim();
+  if (!raw) return DEFAULT_API_BASE;
+
+  const renderOrigin = raw.match(/https?:\/\/[a-z0-9-]+\.onrender\.com/i);
+  if (renderOrigin) return renderOrigin[0];
+
+  const localOrigin = raw.match(/https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?/i);
+  if (localOrigin) return localOrigin[0];
+
+  try {
+    const parsed = new URL(raw);
+    return parsed.origin;
+  } catch {
+    return DEFAULT_API_BASE;
+  }
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_BASE_URL);
 
 function wait(milliseconds: number) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
