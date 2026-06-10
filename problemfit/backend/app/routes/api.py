@@ -5,12 +5,10 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.analyzers.evaluation import evaluate_analyzer
 from app.data.problems import PROBLEM_BY_ID, PROBLEMS
 from app.data.topics import TOPICS
 from app.database.store import build_store
 from app.models.schemas import AnalyzeRequest, ProfileRequest, SaveAnalysisRequest
-from app.services.analyzer_service import analyze_problem, dashboard_summary
 from app.services.learning_path import build_learning_path
 
 router = APIRouter(prefix="/api")
@@ -66,6 +64,8 @@ def get_profile(user_id: str) -> dict[str, Any]:
 
 @router.post("/analyze")
 def analyze(payload: AnalyzeRequest) -> dict[str, Any]:
+    from app.services.analyzer_service import analyze_problem
+
     return analyze_problem(payload.problem_text, payload.known_topics, payload.language)
 
 
@@ -87,6 +87,8 @@ def learning_path(user_id: str) -> dict[str, Any]:
 
 @router.get("/dashboard/{user_id}")
 def dashboard(user_id: str) -> dict[str, Any]:
+    from app.services.analyzer_service import dashboard_summary
+
     profile = store.get_profile(user_id)
     saved = store.list_saved_analyses(user_id)
     return dashboard_summary(profile, saved)
@@ -94,4 +96,7 @@ def dashboard(user_id: str) -> dict[str, Any]:
 
 @router.get("/evaluate-analyzer")
 def evaluate() -> dict[str, Any]:
+    from app.analyzers.evaluation import evaluate_analyzer
+    from app.services.analyzer_service import analyze_problem
+
     return evaluate_analyzer(PROBLEMS, analyze_problem)
