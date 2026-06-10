@@ -14,7 +14,3 @@ services:
         value: production
       - key: MONGODB_DB
         value: problemfit
-      - key: MONGODB_URI
-        sync: false
-      - key: FRONTEND_ORIGIN
-        sync: false
