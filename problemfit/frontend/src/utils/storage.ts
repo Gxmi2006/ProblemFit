@@ -2,6 +2,7 @@ import type { AnalysisResult, Language, Profile, SavedAnalysis } from "../types"
 
 export const DEMO_USER_ID = "demo-user";
 
+const USER_ID_KEY = "problemfit_user_id";
 const PROFILE_KEY = "problemfit_profile";
 const SAVED_KEY = "problemfit_saved_analyses";
 const LAST_ANALYSIS_KEY = "problemfit_last_analysis";
@@ -9,16 +10,26 @@ const LAST_PROBLEM_KEY = "problemfit_last_problem_text";
 
 const canUseStorage = () => typeof window !== "undefined" && Boolean(window.localStorage);
 
+export function getUserId(): string {
+  if (!canUseStorage()) return DEMO_USER_ID;
+  const existing = localStorage.getItem(USER_ID_KEY);
+  if (existing) return existing;
+  const userId = crypto.randomUUID ? crypto.randomUUID() : `anon-${Date.now()}`;
+  localStorage.setItem(USER_ID_KEY, userId);
+  return userId;
+}
+
 export function getProfile(): Profile {
-  if (!canUseStorage()) return { user_id: DEMO_USER_ID, known_topics: [], preferred_language: "Python" };
+  const userId = getUserId();
+  if (!canUseStorage()) return { user_id: userId, known_topics: [], preferred_language: "Python" };
   const raw = localStorage.getItem(PROFILE_KEY);
-  if (!raw) return { user_id: DEMO_USER_ID, known_topics: [], preferred_language: "Python" };
-  return JSON.parse(raw) as Profile;
+  if (!raw) return { user_id: userId, known_topics: [], preferred_language: "Python" };
+  return { ...JSON.parse(raw), user_id: userId } as Profile;
 }
 
 export function saveProfile(knownTopics: string[], preferredLanguage: Language = "Python"): Profile {
   const profile: Profile = {
-    user_id: DEMO_USER_ID,
+    user_id: getUserId(),
     known_topics: Array.from(new Set(knownTopics)).sort(),
     preferred_language: preferredLanguage,
     updated_at: new Date().toISOString(),
@@ -36,7 +47,7 @@ export function getSavedAnalyses(): SavedAnalysis[] {
 export function saveAnalysis(title: string, problemText: string, analysis: AnalysisResult): SavedAnalysis {
   const saved: SavedAnalysis = {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-    user_id: DEMO_USER_ID,
+    user_id: getUserId(),
     title,
     problem_text: problemText,
     analysis,

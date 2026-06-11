@@ -1,5 +1,5 @@
 import type { AnalysisResult, DashboardSummary, EvaluationResult, Language, LearningPathResponse, Problem, Profile, SavedAnalysis, Topic } from "../types";
-import { DEMO_USER_ID, getProfile, getSavedAnalyses, saveAnalysis as saveLocalAnalysis, saveProfile as saveLocalProfile } from "../utils/storage";
+import { getProfile, getSavedAnalyses, getUserId, saveAnalysis as saveLocalAnalysis, saveProfile as saveLocalProfile } from "../utils/storage";
 
 const DEFAULT_API_BASE = "http://127.0.0.1:8000";
 
@@ -66,7 +66,7 @@ export const api = {
     try {
       return await apiFetch<Profile>("/api/profile", {
         method: "POST",
-        body: JSON.stringify({ user_id: DEMO_USER_ID, known_topics, preferred_language }),
+        body: JSON.stringify({ user_id: getUserId(), known_topics, preferred_language }),
       });
     } catch {
       return local;
@@ -74,7 +74,7 @@ export const api = {
   },
   getProfile: async () => {
     try {
-      return await apiFetch<Profile>(`/api/profile/${DEMO_USER_ID}`);
+      return await apiFetch<Profile>(`/api/profile/${getUserId()}`);
     } catch {
       return getProfile();
     }
@@ -89,7 +89,7 @@ export const api = {
     try {
       return await apiFetch<SavedAnalysis>("/api/save-analysis", {
         method: "POST",
-        body: JSON.stringify({ user_id: DEMO_USER_ID, title, problem_text, analysis }),
+        body: JSON.stringify({ user_id: getUserId(), title, problem_text, analysis }),
       });
     } catch {
       return local;
@@ -97,7 +97,7 @@ export const api = {
   },
   savedAnalyses: async () => {
     try {
-      const remote = await apiFetch<SavedAnalysis[]>(`/api/saved-analyses/${DEMO_USER_ID}`);
+      const remote = await apiFetch<SavedAnalysis[]>(`/api/saved-analyses/${getUserId()}`);
       const local = getSavedAnalyses();
       const byId = new Map([...remote, ...local].map((item) => [item.id, item]));
       return Array.from(byId.values()).sort((a, b) => b.created_at.localeCompare(a.created_at));
@@ -105,10 +105,10 @@ export const api = {
       return getSavedAnalyses();
     }
   },
-  learningPath: () => apiFetch<LearningPathResponse>(`/api/learning-path/${DEMO_USER_ID}`),
+  learningPath: () => apiFetch<LearningPathResponse>(`/api/learning-path/${getUserId()}`),
   dashboard: async () => {
     try {
-      return await apiFetch<DashboardSummary>(`/api/dashboard/${DEMO_USER_ID}`);
+      return await apiFetch<DashboardSummary>(`/api/dashboard/${getUserId()}`);
     } catch {
       const profile = getProfile();
       const saved = getSavedAnalyses();
